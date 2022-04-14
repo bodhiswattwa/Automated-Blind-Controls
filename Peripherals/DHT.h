@@ -1,9 +1,11 @@
-// Code Adapted from DHT11 Library by Eric Fossum from the MBED Code Repository
-// Copyright 2016 Eric Fossum
-// SPDX-License-Identifier: Apache-2.0
-// https://os.mbed.com/users/fossum_13/code/DHT11/
-// Licensed with Apache http://www.apache.org/licenses/
-// Depreciation issues addressed 11/26/2020
+// File Name: DHT.h
+// File Last Updated: 04/14/2022
+// Authors: Gabriel Yengle, Avi Tombak, Jesse Both and Bodhiswattwa Basu
+// File Description: The following file is the file required to aid the reading from the DHT11 sensor to get appropriate readings, like temperature (degrees Fahrenheit or Celsius) and humidity.
+// File Functions and Returned Values:
+//      1. Class DHT11 -> read(); getFahrenheit(); getCelsius(); getHumidity();
+// File Inclusions: 
+//      1. mbed.h
 
 #ifndef DHT11_H
 #define DHT11_H
