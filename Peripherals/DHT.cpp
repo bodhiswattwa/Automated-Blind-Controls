@@ -1,10 +1,14 @@
-// Code Adapted from DHT11 Library by Eric Fossum from the MBED Code Repository
-// For use in CSE321 at UB 
-// Copyright 2016 Eric Fossum
-// SPDX-License-Identifier: Apache-2.0
-// https://os.mbed.com/users/fossum_13/code/DHT11/
-// Licensed with Apache http://www.apache.org/licenses/ 
-// Depreciation issues addressed 11/26/2020
+// File Name: DHT.cpp
+// File Last Updated: 04/14/2022
+// Authors: Gabriel Yengle, Avi Tombak, Jesse Both and Bodhiswattwa Basu
+// File Description: The following file is the file required to read from the DHT11 sensor and get appropriate readings, like temperature (degrees Fahrenheit or Celsius) and humidity.
+// File Functions and Returned Values:
+//      1. read() -> Initiates temperature and humidity values.
+//      2. getFahrenheit() -> Temperature in Fahrenheit.
+//      3. getCelsius() -> Temperature in Celsius.
+//      4. getHumidity() -> Humidity level. 
+// File Inclusions: 
+//      1. DHT.h
 
 
 #include "DHT.h"
