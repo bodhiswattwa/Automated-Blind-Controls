@@ -329,9 +329,4 @@ void motor_idle(void)
     yellow = 0;
     orange = 0;
     wait_us(DLY); 
-    
-<<<<<<< HEAD
 }
-=======
-// }
->>>>>>> 071300660cee13c8a02dda45ee96e7e0d3ad96cf
