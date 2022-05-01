@@ -1,4 +1,11 @@
-
+// File Name: stepper_test.cpp
+// File Last Updated: 04/14/2022
+// Authors: Gabriel Yengle, Avi Tombak, Jesse Both and Bodhiswattwa Basu
+// File Description: The following file is the file required to test the stepper motor. 
+// File Functions and Returned Values:
+//      1. main() -> TBD
+// File Inclusions: 
+//      1. mbed.h
 
 #include "mbed.h"
 #include "stepper_test.h"
@@ -323,4 +330,8 @@ void motor_idle(void)
     orange = 0;
     wait_us(DLY); 
     
+<<<<<<< HEAD
 }
+=======
+// }
+>>>>>>> 071300660cee13c8a02dda45ee96e7e0d3ad96cf
