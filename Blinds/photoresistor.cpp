@@ -1,40 +1,39 @@
 // File Name: photoresistor.cpp
-// File Last Updated: 05/03/2022
+// File Last Updated: 04/14/2022
 // Authors: Gabriel Yengle, Avi Tombak, Jesse Both and Bodhiswattwa Basu
-// File Description: 
+// File Description: The following file is the file required to read from the photoresistor and get the intensity of light readings.
 // File Functions and Returned Values:
-
+//      1. check_photo_resistor() -> intensity of light.
 // File Inclusions: 
-//      1. 
+//      1. stdio.h
+//      2. mbed.h
+//      3. string.h
 
+#include "mbed.h"
+#include <stdio.h>
+#include <string.h>
 
-#include "photoresistor.h"
- 
-Photoresistor::Photoresistor(PinName const &p) : _pin(p) {
-    _light = 0; //default unit of Celcius 
-    _intensity = 0;
-}
-
-int Photoresistor::read() {
-    _light = _pin.read_u16();   
-    return _light;
-}
-
-int Photoresistor::intensity() {
-    read();
-    if(_light > 50000){
-        _intensity = 5;
-    } 
-    else if (_light > 40000 ){
-        _intensity = 4;
-    } 
-    else if(_light > 30000){
-        _intensity = 3;
-    } 
-    else if(_light > 20000){
-        _intensity = 2;
-    } else {
-        _intensity = 1;
+int check_photo_resistor()
+{
+    int val = 0;
+    int intensity = 0;
+    while (true) {
+        val = light_sens.read_u16();    
+        if(val > 50000){
+            intensity = 5;
+        } 
+        else if (val > 40000 ){
+            intensity = 4;
+        } 
+        else if(val > 30000){
+            intensity = 3;
+        } 
+        else if(val > 20000){
+            intensity = 2;
+        } else {
+           intensity = 1;
+        }
     }
-    return _intensity;
+    return intensity;
 }
+
