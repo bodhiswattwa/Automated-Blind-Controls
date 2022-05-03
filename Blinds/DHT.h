@@ -6,9 +6,6 @@
 //      1. Class DHT11 -> read(); getFahrenheit(); getCelsius(); getHumidity();
 // File Inclusions: 
 //      1. mbed.h
-
-#ifndef DHT11_H
-#define DHT11_H
  
 #include "mbed.h"
  
@@ -80,4 +77,3 @@ private:
     Timer _timer;
 };
  
-#endif
