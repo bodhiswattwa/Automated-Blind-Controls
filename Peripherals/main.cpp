@@ -19,6 +19,7 @@
 #include "PinNames.h"
 
 #include "stepper_test.h"
+#include "photoresistor.h"
 
 #define DHTC PA_3
 #define LIGHT PA_4      // pin for light sensor
