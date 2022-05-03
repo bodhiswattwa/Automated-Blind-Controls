@@ -6,9 +6,6 @@
 //      1. Class DHT11 -> read(); getFahrenheit(); getCelsius(); getHumidity();
 // File Inclusions: 
 //      1. mbed.h
-
-#ifndef PHOTORESISTOR_H
-#define PHOTORESISTOR_H
  
 #include "mbed.h"
  
@@ -26,4 +23,3 @@ private:
     AnalogIn _pin;
 };
  
-#endif

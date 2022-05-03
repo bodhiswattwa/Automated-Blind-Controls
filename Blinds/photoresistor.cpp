@@ -21,6 +21,7 @@ class Photoresistor
         _light = 0; //default unit of Celcius 
         _intensity = 0;
         _pin = p;
+
     }
     
     puplic int Photoresistor::read() { //performs C to F conversion

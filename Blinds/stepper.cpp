@@ -38,6 +38,30 @@ void step_test(int mode, int dir)
         else if (mode == 1)
         {
             fullstep_anticlockwise();
+            // wave drive
+            if (mode == 0)  
+            {
+                wave_clockwise();
+            }
+        
+            // full step
+            else if (mode == 1)
+            {
+                fullstep_clockwise();
+            }
+        
+            // half step
+            else if (mode == 2)
+            {
+                halfstep_clockwise();
+            }
+            
+            else 
+            {
+                printf("Invalid mode, Motor idle \n\r");
+                motor_idle(); 
+            }
+
         }
     
         // half step
@@ -223,7 +247,7 @@ void wave_clockwise()
  
 // function for full step in clockwise direction
 void fullstep_clockwise()
-{               
+{                
     blue = 1;
     pink = 0;
     yellow = 0;
