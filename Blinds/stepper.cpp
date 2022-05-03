@@ -56,7 +56,6 @@ int step_test(int mode, int dir)
         
         else if (dir == 1)
         {
-            printf("Motor in clockwise rotation \n\r");
             // wave drive
             if (mode == 0)  
             {
@@ -95,7 +94,6 @@ int step_test(int mode, int dir)
 // function for wave drive in anticlockwise direction
 void wave_anticlockwise()
 {
-    printf("Motor in wave drive \n\r");
     blue = 0;
     pink = 0;
     yellow = 0;
