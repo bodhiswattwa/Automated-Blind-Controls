@@ -124,7 +124,6 @@ void wave_anticlockwise()
 // function for full step in anticlockwise direction
 void fullstep_anticlockwise()
 {
-    printf("Motor in full step \n\r");
     blue = 0;
     pink = 0;
     yellow = 1;
@@ -153,7 +152,6 @@ void fullstep_anticlockwise()
 // function for half step in anticlockwise direction
 void halfstep_anticlockwise()
 {
-    printf("Motor in half step \n\r");
     blue = 0;
     pink = 0;
     yellow = 0;
@@ -207,7 +205,6 @@ void halfstep_anticlockwise()
 // function for wave drive in clockwise direction
 void wave_clockwise()
 {
-    printf("Motor in wave drive \n\r");
     blue = 1;
     pink = 0;
     yellow = 0;
@@ -235,9 +232,7 @@ void wave_clockwise()
  
 // function for full step in clockwise direction
 void fullstep_clockwise()
-{
-    printf("Motor in full step \n\r");
-                
+{                
     blue = 1;
     pink = 0;
     yellow = 0;
@@ -266,7 +261,6 @@ void fullstep_clockwise()
 void halfstep_clockwise(void)
 {
     halfstep_clockwise();
-    printf("Motor in half step \n\r");
     blue = 0;
     pink = 0;
     yellow = 0;
