@@ -1,42 +1,44 @@
-// File Name: photoresistor.cpp
+// File Name: phtoresistor.cpp
 // File Last Updated: 04/14/2022
 // Authors: Gabriel Yengle, Avi Tombak, Jesse Both and Bodhiswattwa Basu
-// File Description: The following file is the file required to read from the photoresistor and get the intensity of light readings.
+// File Description: The following file is the file required to read from the DHT11 sensor and get appropriate readings, like temperature (degrees Fahrenheit or Celsius) and humidity.
 // File Functions and Returned Values:
-//      1. check_photo_resistor() -> intensity of light.
+//      1. read() -> Initiates temperature and humidity values.
+//      2. getFahrenheit() -> Temperature in Fahrenheit.
+//      3. getCelsius() -> Temperature in Celsius.
+//      4. getHumidity() -> Humidity level. 
 // File Inclusions: 
-//      1. stdio.h
-//      2. mbed.h
-//      3. string.h
+//      1. DHT.h
 
-#include "mbed.h"
-#include <stdio.h>
-#include <string.h>
+
 #include "photoresistor.h"
-
-AnalogIn light_sens(LIGHT); 
-
-int check_photo_resistor()
-{
-    int val = 0;
-    int intensity = 0;
-
-    val = light_sens.read_u16();    
-    if(val > 50000){
-        intensity = 5;
+ 
+Photoresistor::Photoresistor(PinName const &p) : _pin(p) {
+    _light = 0; //default unit of Celcius 
+    _intensity = 0;
+}
+ 
+int Photoresistor::read() { //performs C to F conversion
+    _light = _pin.read_u16();
+    return _light;
+}
+ 
+int Photoresistor::get_intensity() {
+    read();
+    if(_light > 50000){
+        _intensity = 5;
     } 
-    else if (val > 40000 ){
-        intensity = 4;
+    else if (_light > 40000 ){
+        _intensity = 4;
     } 
-    else if(val > 30000){
-        intensity = 3;
+    else if(_light > 30000){
+        _intensity = 3;
     } 
-    else if(val > 20000){
-        intensity = 2;
+    else if(_light > 20000){
+        _intensity = 2;
     } else {
-        intensity = 1;
+        _intensity = 1;
     }
 
-    return intensity;
+    return _intensity;
 }
-
