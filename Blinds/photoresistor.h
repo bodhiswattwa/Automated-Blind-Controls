@@ -9,9 +9,10 @@
 //      2. mbed.h
 //      3. string.h
 
-#include "mbed.h"
 #include <stdio.h>
 #include <string.h>
+
+#include "mbed.h"
 
 #define LIGHT PA_4      // pin for light sensor
 AnalogIn light_sens(LIGHT); 
