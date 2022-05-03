@@ -8,7 +8,7 @@
 //      1. mbed.h
 
 #include "mbed.h"
-#include "stepper_test.h"
+#include "stepper.h"
 
 #define DLY 25000
  
