@@ -17,19 +17,21 @@ class Photoresistor
     int _intensity;
     AnalogIn _pin;
 
-    public Photoresistor::Photoresistor(PinName const &p) {
+    public:
+    
+    Photoresistor(PinName const &p) : _pin(p){
         _light = 0; //default unit of Celcius 
         _intensity = 0;
         _pin = p;
 
     }
     
-    puplic int Photoresistor::read() { //performs C to F conversion
+    int read() { //performs C to F conversion
         _light = _pin.read_u16();
         return _light;
     }
     
-    public int Photoresistor::get_intensity() {
+    int get_intensity() {
         read();
         if(_light > 50000){
             _intensity = 5;
