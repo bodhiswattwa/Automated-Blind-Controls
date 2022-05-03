@@ -25,17 +25,11 @@ DigitalOut blue(PC_6);
 
 //enter dir = 0 for anticlockwise rotation, dir = 1 for clockwise rotation*/
 int step_test(int mode, int dir) 
-{
-    
-    printf("\n\r");
-    printf("****** Stepper Motor starting ******* \n\r");
-    printf("Mode = %d  Direction = %d  \n\r", mode, dir);
-    
+{    
     while (true) 
     {
         if (dir == 0)
         {
-            printf("Motor in anticlockwise rotation\n\r");
             // wave drive
             if (mode == 0)  
             {
