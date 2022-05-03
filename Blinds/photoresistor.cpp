@@ -10,16 +10,22 @@
 // File Inclusions: 
 //      1. DHT.h
 
-
+#include <iterator>
+#include <string.h>
+#include <stdio.h>
+#include <iostream>
 #include "photoresistor.h"
  
 Photoresistor::Photoresistor(PinName const &p) : _pin(p) {
     _light = 0; //default unit of Celcius 
     _intensity = 0;
+    std::cout << "light constr " << _light << std::endl; 
+
 }
  
 int Photoresistor::read() { //performs C to F conversion
     _light = _pin.read_u16();
+    std::cout << "light " << _light << std::endl; 
     return _light;
 }
  
