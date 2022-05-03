@@ -20,12 +20,15 @@
 
 #include "DHT.h"
 #include "stepper.h"
+// #include "photoresistor.h"
 #include "photoresistor.h"
+
 
 #define DHTC PA_3
 #define LIGHT PA_4      // pin for light sensor
 
-DHT11 dht(PA_3);
+DHT11 dht(DHTC);
+Photoresistor light(LIGHT);
 
 int main()
 {

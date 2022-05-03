@@ -1,20 +1,28 @@
 // File Name: photoresistor.h
-// File Last Updated: 04/14/2022
+// File Last Updated: 05/03/2022
 // Authors: Gabriel Yengle, Avi Tombak, Jesse Both and Bodhiswattwa Basu
-// File Description: The following file is the file required to read from the photoresistor and get the intensity of light readings.
+// File Description: 
 // File Functions and Returned Values:
-//      1. check_photo_resistor() -> intensity of light.
+//      1. 
 // File Inclusions: 
-//      1. stdio.h
-//      2. mbed.h
-//      3. string.h
+//      1. mbed.h
 
-#include <stdio.h>
-#include <string.h>
-
+#ifndef PHOTORESISTOR_H
+#define PHOTORESISTOR_H
+ 
 #include "mbed.h"
-
-#define LIGHT PA_4      // pin for light sensor
-AnalogIn light_sens(LIGHT); 
-
-int check_photo_resistor();
+ 
+class Photoresistor
+{
+public:
+    Photoresistor(PinName const &p);
+    int read();
+    int intensity();
+ 
+private:
+    int _light;
+    int _intensity;
+    AnalogIn _pin;
+};
+ 
+#endif
