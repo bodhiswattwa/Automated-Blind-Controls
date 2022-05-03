@@ -1,5 +1,5 @@
-// File Name: stepper_test.cpp
 // File Last Updated: 04/14/2022
+// File Name: stepper_test.cpp
 // Authors: Gabriel Yengle, Avi Tombak, Jesse Both and Bodhiswattwa Basu
 // File Description: The following file is the file required to test the stepper motor. 
 // File Functions and Returned Values:
@@ -10,7 +10,7 @@
 #include "mbed.h"
 #include "stepper.h"
 
-#define DLY 25000
+#define DLY 5000
  
 DigitalOut orange(PB_12);
 DigitalOut yellow(PB_13);
@@ -24,78 +24,69 @@ DigitalOut blue(PC_6);
 // 0 for wave drive, 1 for full step, 2 for half step
 
 //enter dir = 0 for anticlockwise rotation, dir = 1 for clockwise rotation*/
-int step_test(int mode, int dir) 
+void step_test(int mode, int dir) 
 {    
-    while (true) 
+    if (dir == 0)
     {
-        if (dir == 0)
+        // wave drive
+        if (mode == 0)  
         {
-            // wave drive
-            if (mode == 0)  
-            {
-                wave_anticlockwise();
-            }
-        
-            // full step
-            else if (mode == 1)
-            {
-                fullstep_anticlockwise();
-            }
-        
-            // half step
-            else if (mode == 2)
-            {
-                halfstep_anticlockwise();
-            }
-            else 
-            {
-                printf("Invalid mode, Motor idle \n\r");
-                motor_idle();
-            }
+            wave_anticlockwise();
         }
-        
-        else if (dir == 1)
+    
+        // full step
+        else if (mode == 1)
         {
-            printf("Motor in clockwise rotation \n\r");
-            // wave drive
-            if (mode == 0)  
-            {
-                wave_clockwise();
-            }
-        
-            // full step
-            else if (mode == 1)
-            {
-                fullstep_clockwise();
-            }
-        
-            // half step
-            else if (mode == 2)
-            {
-                halfstep_clockwise();
-            }
-            
-            else 
-            {
-                printf("Invalid mode, Motor idle \n\r");
-                motor_idle(); 
-            }
-            
+            fullstep_anticlockwise();
         }
-        
-        else
+    
+        // half step
+        else if (mode == 2)
         {
-            printf("Invalid direction, Motor idle \n\r");
+            halfstep_anticlockwise();
+        }
+        else 
+        {
             motor_idle();
         }
+    }
+    
+    else if (dir == 1)
+    {
+        // wave drive
+        if (mode == 0)  
+        {
+            wave_clockwise();
+        }
+    
+        // full step
+        else if (mode == 1)
+        {
+            fullstep_clockwise();
+        }
+    
+        // half step
+        else if (mode == 2)
+        {
+            halfstep_clockwise();
+        }
         
+        else 
+        {
+            motor_idle(); 
+        }
+        
+    }
+    
+    else
+    {
+        motor_idle();
     }
 }
  
 // function for wave drive in anticlockwise direction
 void wave_anticlockwise()
 {
-    printf("Motor in wave drive \n\r");
     blue = 0;
     pink = 0;
     yellow = 0;
@@ -124,7 +115,6 @@ void wave_anticlockwise()
 // function for full step in anticlockwise direction
 void fullstep_anticlockwise()
 {
-    printf("Motor in full step \n\r");
     blue = 0;
     pink = 0;
     yellow = 1;
@@ -153,7 +143,6 @@ void fullstep_anticlockwise()
 // function for half step in anticlockwise direction
 void halfstep_anticlockwise()
 {
-    printf("Motor in half step \n\r");
     blue = 0;
     pink = 0;
     yellow = 0;
@@ -207,7 +196,6 @@ void halfstep_anticlockwise()
 // function for wave drive in clockwise direction
 void wave_clockwise()
 {
-    printf("Motor in wave drive \n\r");
     blue = 1;
     pink = 0;
     yellow = 0;
@@ -235,9 +223,7 @@ void wave_clockwise()
  
 // function for full step in clockwise direction
 void fullstep_clockwise()
-{
-    printf("Motor in full step \n\r");
-                
+{               
     blue = 1;
     pink = 0;
     yellow = 0;
@@ -266,7 +252,6 @@ void fullstep_clockwise()
 void halfstep_clockwise(void)
 {
     halfstep_clockwise();
-    printf("Motor in half step \n\r");
     blue = 0;
     pink = 0;
     yellow = 0;

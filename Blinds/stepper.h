@@ -1,5 +1,5 @@
 
-int step_test(int, int);
+void step_test(int, int);
 void wave_anticlockwise(void);
 void fullstep_anticlockwise(void);
 void halfstep_anticlockwise(void);

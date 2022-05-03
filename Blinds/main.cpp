@@ -31,6 +31,8 @@ Photoresistor light(LIGHT);
 int main()
 {
     while (true) {
+        step_test(2, 0);
+
         printf("%d\n", light.get_intensity());
     }
 }

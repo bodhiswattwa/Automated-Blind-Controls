@@ -20,8 +20,8 @@ public:
     int read();
     int get_intensity();
 private:
-    int _light;    
-    int _intensity;
+    int _light = 0;    
+    int _intensity = 0;
     
     AnalogIn _pin;
 };
