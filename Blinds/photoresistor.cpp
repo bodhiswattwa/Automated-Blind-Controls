@@ -9,45 +9,36 @@
 //      4. getHumidity() -> Humidity level. 
 // File Inclusions: 
 //      1. DHT.h
-#include "mbed.h"
 
-class Photoresistor
-{
-    int _light;  
-    int _intensity;
-    AnalogIn _pin;
 
-    public:
-    
-    Photoresistor(PinName const &p) : _pin(p){
-        _light = 0; //default unit of Celcius 
-        _intensity = 0;
-        _pin = p;
-
+#include "photoresistor.h"
+ 
+Photoresistor::Photoresistor(PinName const &p) : _pin(p) {
+    _light = 0; //default unit of Celcius 
+    _intensity = 0;
+}
+ 
+int Photoresistor::read() { //performs C to F conversion
+    _light = _pin.read_u16();
+    return _light;
+}
+ 
+int Photoresistor::get_intensity() {
+    read();
+    if(_light > 50000){
+        _intensity = 5;
+    } 
+    else if (_light > 40000 ){
+        _intensity = 4;
+    } 
+    else if(_light > 30000){
+        _intensity = 3;
+    } 
+    else if(_light > 20000){
+        _intensity = 2;
+    } else {
+        _intensity = 1;
     }
-    
-    int read() { //performs C to F conversion
-        _light = _pin.read_u16();
-        return _light;
-    }
-    
-    int get_intensity() {
-        read();
-        if(_light > 50000){
-            _intensity = 5;
-        } 
-        else if (_light > 40000 ){
-            _intensity = 4;
-        } 
-        else if(_light > 30000){
-            _intensity = 3;
-        } 
-        else if(_light > 20000){
-            _intensity = 2;
-        } else {
-            _intensity = 1;
-        }
 
-        return _intensity;
-    }
-};
+    return _intensity;
+}
