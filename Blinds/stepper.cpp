@@ -10,21 +10,18 @@
 #include "mbed.h"
 #include "stepper.h"
 
-#define DLY 5000
- 
-DigitalOut orange(PB_12);
-DigitalOut yellow(PB_13);
-DigitalOut pink(PB_15);
-DigitalOut blue(PC_6);
-
-//    Blue  = coil 1      Pink  = coil 2
-//     Yellow = coil 3     Orange = coil 4
+Stepper::Stepper(PinName const &blue, PinName const &pink, PinName const &yellow, PinName const &orange) :
+                            _blue(blue), _pink(pink), _yellow(yellow), _orange(orange) {
+    _mode = 0;
+    _dir = 0;
+    _DLY = 5000;
+}
 
 /* enter mode in the following line
 // 0 for wave drive, 1 for full step, 2 for half step
 
 //enter dir = 0 for anticlockwise rotation, dir = 1 for clockwise rotation*/
-void step_test(int mode, int dir) 
+void Stepper::step_rot(int mode, int dir) 
 {    
     if (dir == 0)
     {
@@ -71,6 +68,7 @@ void step_test(int mode, int dir)
         }
         else 
         {
+            printf("Invalid mode, Motor idle \n\r");
             motor_idle();
         }
     }
@@ -97,6 +95,7 @@ void step_test(int mode, int dir)
         
         else 
         {
+            printf("Invalid mode, Motor idle \n\r");
             motor_idle(); 
         }
         
@@ -104,232 +103,239 @@ void step_test(int mode, int dir)
     
     else
     {
+        printf("Invalid mode, Motor idle \n\r");
         motor_idle();
     }
+    printf("%d\n", _DLY);
 }
- 
+
+// set DLY
+void Stepper::set_dly(int dly){
+    _DLY = dly;
+}
+
 // function for wave drive in anticlockwise direction
-void wave_anticlockwise()
+void Stepper::wave_anticlockwise()
 {
-    blue = 0;
-    pink = 0;
-    yellow = 0;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 1;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 0;
-    yellow = 1;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 1;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 1;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 1;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 0;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
 }
  
 // function for full step in anticlockwise direction
-void fullstep_anticlockwise()
+void Stepper::fullstep_anticlockwise()
 {
-    blue = 0;
-    pink = 0;
-    yellow = 1;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 1;
+    _orange = 1;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 1;
-    yellow = 1;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 1;
+    _yellow = 1;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 1;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 1;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 0;
-    yellow = 0;
-    orange = 1;
-    wait_us(DLY);  
+    _blue = 1;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 1;
+    wait_us(_DLY);  
 }
  
 // function for half step in anticlockwise direction
-void halfstep_anticlockwise()
+void Stepper::halfstep_anticlockwise()
 {
-    blue = 0;
-    pink = 0;
-    yellow = 0;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 1;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 0;
-    yellow = 1;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 1;
+    _orange = 1;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 0;
-    yellow = 1;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 1;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 1;
-    yellow = 1;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 1;
+    _yellow = 1;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 1;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 1;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 1;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 1;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 0;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 0;
-    yellow = 0;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 1;
+    wait_us(_DLY);
     
 }
  
 // function for wave drive in clockwise direction
-void wave_clockwise()
+void Stepper::wave_clockwise()
 {
-    blue = 1;
-    pink = 0;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 1;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 1;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 0;
-    yellow = 1;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 1;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 0;
-    yellow = 0;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 1;
+    wait_us(_DLY);
 }
  
 // function for full step in clockwise direction
-void fullstep_clockwise()
+void Stepper::fullstep_clockwise()
 {                
-    blue = 1;
-    pink = 0;
-    yellow = 0;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 1;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 1;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 1;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 1;
-    yellow = 1;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 1;
+    _yellow = 1;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 0;
-    yellow = 1;
-    orange = 1;
-    wait_us(DLY);  
+    _blue = 0;
+    _pink = 0;
+    _yellow = 1;
+    _orange = 1;
+    wait_us(_DLY);  
 }
  
-void halfstep_clockwise(void)
+void Stepper::halfstep_clockwise(void)
 {
     halfstep_clockwise();
-    blue = 0;
-    pink = 0;
-    yellow = 0;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 1;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 0;
-    yellow = 0;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 1;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 0;
-    yellow = 1;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 1;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 1;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 1;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 1;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 1;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 1;
-    yellow = 1;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 1;
+    _yellow = 1;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 1;
-    pink = 0;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY);
+    _blue = 1;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY);
         
-    blue = 0;
-    pink = 0;
-    yellow = 1;
-    orange = 1;
-    wait_us(DLY);
+    _blue = 0;
+    _pink = 0;
+    _yellow = 1;
+    _orange = 1;
+    wait_us(_DLY);
 }
  
-void motor_idle(void)
+void Stepper::motor_idle(void)
 {
-    blue = 0;
-    pink = 0;
-    yellow = 0;
-    orange = 0;
-    wait_us(DLY); 
+    _blue = 0;
+    _pink = 0;
+    _yellow = 0;
+    _orange = 0;
+    wait_us(_DLY); 
 }
