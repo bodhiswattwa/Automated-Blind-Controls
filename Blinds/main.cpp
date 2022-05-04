@@ -37,14 +37,17 @@ float update_step(int, int);
 
 int main()
 {
-
+    int count = 0;
     int prev_step = 0;
     int steps = 0;
     int step_size;
     float step_get;
     while (true) {
         dht.read();
-        
+        // if(count%20 == 0){
+        //     dht.read();
+        //     count = 0;
+        // }
         /* update blind positions -> 
                                     - open = 0 (full step = 0) 
                                     - open-ish (full step = 1, half step = 1)
@@ -53,7 +56,7 @@ int main()
                                     - closed (step = 7)
         */
         step_get = get_steps(light.get_intensity(), dht.getCelsius());
-        
+        printf("temp = %d\n", dht.getCelsius());
         if(step_get < 25 && step_get > 20){
             step_size = 14;
         }else if(step_get < 20 && step_get > 15){
@@ -68,6 +71,8 @@ int main()
 
 
         steps = update_step(step_size, prev_step);
+        prev_step = step_size;
+        printf("steps = %d\n", steps);
         while(steps > 0){
             steps--;
             stepper.step_rot(MODE, CLOSE);
@@ -77,8 +82,11 @@ int main()
             stepper.step_rot(MODE, OPEN);
         }
 
-        thread_sleep_for(500);
+        // count++;
+
+        thread_sleep_for(5000);
     }
+
 
 }
 
