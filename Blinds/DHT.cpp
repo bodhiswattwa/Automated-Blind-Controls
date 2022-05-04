@@ -9,10 +9,6 @@
 //      4. getHumidity() -> Humidity level. 
 // File Inclusions: 
 //      1. DHT.h
-#include <iterator>
-#include <string.h>
-#include <stdio.h>
-#include <iostream>
 
 #include "DHT.h"
  
@@ -98,7 +94,6 @@ float DHT11::getFahrenheit() { //performs C to F conversion
 }
  
 int DHT11::getCelsius() {
-    std::cout << "temperature = " << _temperature << std::endl;
     return(_temperature);
 }
 int DHT11::getHumidity() {
