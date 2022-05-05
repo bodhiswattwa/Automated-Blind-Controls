@@ -27,6 +27,7 @@
 #define MODE 0      // TODO: Which mode?
 #define OPEN 1      // TODO: figure out which is open and close
 #define CLOSE 0
+#define STEP_MULT 5
 
 #define DHT_DELAY 30
 
@@ -38,7 +39,7 @@ Photoresistor light(LIGHT);
 Stepper stepper(IN1, IN2, IN3, IN4);
 
 float get_steps(int, int);
-float update_step(int, int);
+int update_step(int, int);
 void dht_reader();
 
 int main()
@@ -75,6 +76,7 @@ int main()
             }
 
             steps = update_step(step_size, prev_step);
+            printf("stepsize%d\n", steps);
             prev_step = step_size;
             while(steps > 0){
                 steps--;
@@ -97,8 +99,8 @@ float get_steps(int light_int, int temp){
     return (float)light_int * (temp/7.0);
 }
 
-float update_step(int current, int prev){
-    return current - prev;
+int update_step(int current, int prev){
+    return ((current - prev) * STEP_MULT);
 }
 
 void dht_reader(){
