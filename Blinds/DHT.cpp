@@ -12,6 +12,7 @@
 
 #include "DHT.h"
  
+#define LOOP 10000
 DHT11::DHT11(PinName const &p) : _pin(p) {
     // Set creation time so we can make 
     // sure we pause at least 1 second for 
@@ -19,6 +20,7 @@ DHT11::DHT11(PinName const &p) : _pin(p) {
     _timer.start();
     _temperature = 0; //default unit of Celcius 
     _humidity = 0;
+    _error = false;
 }
 
 int DHT11::read() {
@@ -46,28 +48,40 @@ int DHT11::read() {
     _pin.input();
  
     // ACKNOWLEDGE or TIMEOUT
-    unsigned int loopCnt = 10000;
+    unsigned int loopCnt = LOOP;
     while(_pin == 0)
-        if (loopCnt-- == 0) return DHTLIB_ERROR_TIMEOUT;
+        if (loopCnt-- == 0) {
+            _error = true;
+            return DHTLIB_ERROR_TIMEOUT;
+        }
  
-    loopCnt = 10000;
+    loopCnt = LOOP;
     while(_pin == 1)
-        if (loopCnt-- == 0) return DHTLIB_ERROR_TIMEOUT;
+        if (loopCnt-- == 0) {
+            _error = true;
+            return DHTLIB_ERROR_TIMEOUT;
+        }
  
     // READ OUTPUT - 40 BITS => 5 BYTES or TIMEOUT
     for (int i=0; i<40; i++)
     {
-        loopCnt = 10000;
+        loopCnt = LOOP;
         while(_pin == 0)
-            if (loopCnt-- == 0) return DHTLIB_ERROR_TIMEOUT;
+            if (loopCnt-- == 0) {
+                _error = true;
+                return DHTLIB_ERROR_TIMEOUT;
+            }
  
         //unsigned long t = micros();
         Timer t;
         t. start();
  
-        loopCnt = 10000;
+        loopCnt = LOOP;
         while(_pin == 1) //track how long value is 1
-            if (loopCnt-- == 0) return DHTLIB_ERROR_TIMEOUT;
+            if (loopCnt-- == 0) {
+                _error = true;
+                return DHTLIB_ERROR_TIMEOUT;
+            }
 
         //26-30us is 0, ~70us is 1, 40 is a good sample point
         if (t.elapsed_time().count() > 40) bits[idx] |= (1 << cnt);
@@ -85,7 +99,12 @@ int DHT11::read() {
     _temperature = bits[2];
     uint8_t sum = bits[0] + bits[2];  
  
-    if (bits[4] != sum) return DHTLIB_ERROR_CHECKSUM;
+    if (bits[4] != sum) {
+        _error = false;
+        printf("\nChecksum: Temperature may be incorrect.\nTemperature: %d\nHumidity: %d\nSum: %d\n\n", _temperature, _humidity, sum);
+        return DHTLIB_ERROR_CHECKSUM;
+    }
+    _error = false;
     return DHTLIB_OK;
 }
  
@@ -98,4 +117,8 @@ int DHT11::getCelsius() {
 }
 int DHT11::getHumidity() {
     return(_humidity);
+}
+
+bool DHT11::getError(){
+    return _error;
 }

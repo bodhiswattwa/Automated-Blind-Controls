@@ -28,26 +28,30 @@
 #define OPEN 1      // TODO: figure out which is open and close
 #define CLOSE 0
 
+#define DHT_DELAY 30
+
+EventQueue EQ(32 * EVENTS_EVENT_SIZE);
+Ticker DHT_READ;
+
 DHT11 dht(DHT);
 Photoresistor light(LIGHT);
 Stepper stepper(IN1, IN2, IN3, IN4);
 
-float get_steps(int, float);
+float get_steps(int, int);
 float update_step(int, int);
+void dht_reader();
 
 int main()
 {
+    
+    DHT_READ.attach(EQ.event(dht_reader), 2s);
+    dht.read();
     int count = 0;
     int prev_step = 0;
     int steps = 0;
     int step_size;
     float step_get;
     while (true) {
-        dht.read();
-        // if(count%20 == 0){
-        //     dht.read();
-        //     count = 0;
-        // }
         /* update blind positions -> 
                                     - open = 0 (full step = 0) 
                                     - open-ish (full step = 1, half step = 1)
@@ -55,42 +59,41 @@ int main()
                                     - closed-ish (steps = 5, half = 1) 
                                     - closed (step = 7)
         */
-        step_get = get_steps(light.get_intensity(), dht.getCelsius());
-        printf("temp = %d\n", dht.getCelsius());
-        if(step_get < 25 && step_get > 20){
-            step_size = 14;
-        }else if(step_get < 20 && step_get > 15){
-            step_size = 11;
-        }else if(step_get < 15 && step_get > 10){
-            step_size = 7;
-        }else if(step_get < 10 && step_get > 5){
-            step_size = 3;
-        }else{
-            step_size = 0;
+
+        if(!dht.getError()){
+            step_get = get_steps(light.get_intensity(), dht.getCelsius());
+            if(step_get < 25 && step_get > 20){
+                step_size = 14;
+            }else if(step_get < 20 && step_get > 15){
+                step_size = 11;
+            }else if(step_get < 15 && step_get > 10){
+                step_size = 7;
+            }else if(step_get < 10 && step_get > 5){
+                step_size = 3;
+            }else{
+                step_size = 0;
+            }
+
+            steps = update_step(step_size, prev_step);
+            prev_step = step_size;
+            while(steps > 0){
+                steps--;
+                stepper.step_rot(MODE, CLOSE);
+            }
+            while(steps < 0){
+                steps++;
+                stepper.step_rot(MODE, OPEN);
+            }
         }
 
-
-        steps = update_step(step_size, prev_step);
-        prev_step = step_size;
-        printf("steps = %d\n", steps);
-        while(steps > 0){
-            steps--;
-            stepper.step_rot(MODE, CLOSE);
-        }
-        while(steps < 0){
-            steps++;
-            stepper.step_rot(MODE, OPEN);
-        }
-
-        // count++;
-
-        thread_sleep_for(5000);
+        EQ.dispatch_once();
+        thread_sleep_for(500);
     }
 
 
 }
 
-float get_steps(int light_int, float temp){
+float get_steps(int light_int, int temp){
     return (float)light_int * (temp/7.0);
 }
 
@@ -98,4 +101,7 @@ float update_step(int current, int prev){
     return current - prev;
 }
 
+void dht_reader(){
+    dht.read();
+}
 
