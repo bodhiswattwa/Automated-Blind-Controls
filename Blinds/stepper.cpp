@@ -106,7 +106,6 @@ void Stepper::step_rot(int mode, int dir)
         printf("Invalid mode, Motor idle \n\r");
         motor_idle();
     }
-    printf("%d\n", _DLY);
 }
 
 // set DLY
