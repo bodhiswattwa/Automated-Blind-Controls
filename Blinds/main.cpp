@@ -94,6 +94,12 @@ int main()
             }
 
             steps = update_step(step_size, prev_step);
+<<<<<<< Updated upstream
+=======
+            if (steps != 0){
+                printf("stepsize%d\n", steps);
+            }
+>>>>>>> Stashed changes
             prev_step = step_size;
             while(steps > 0){
                 steps--;
