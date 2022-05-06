@@ -31,9 +31,19 @@
 
 #define DHT_DELAY 30
 
-EventQueue EQ(32 * EVENTS_EVENT_SIZE);
+/* Event Queues */
+EventQueue EQ(32 * EVENTS_EVENT_SIZE);                  // DHT11
+EventQueue STEPPER_LEFT_EQ(32 * EVENTS_EVENT_SIZE);     // Stepper Left
+EventQueue STEPPER_RIGHT_EQ(32 * EVENTS_EVENT_SIZE);    // Stepper Right
+
+/* Timer interrupt for DHT */
 Ticker DHT_READ;
 
+/* Threads for each stepper */
+Thread STEPPER_LEFT_THREAD;
+Thread STEPPER_RIGHT_THREAD;
+
+/* Initialize Peripherals */
 DHT11 dht(DHT);
 Photoresistor light(LIGHT);
 Stepper stepper(IN1, IN2, IN3, IN4);
