@@ -19,32 +19,50 @@
 
 #define DHT PA_3        // pin for DHT11
 #define LIGHT PA_4      // pin for light sensor
-#define IN1 PC_6
-#define IN2 PB_15
-#define IN3 PB_13
-#define IN4 PB_12
+#define IN1_LEFT PC_6
+#define IN2_LEFT PB_15
+#define IN3_LEFT PB_13
+#define IN4_LEFT PB_12
 
-#define MODE 0      // TODO: Which mode?
-#define OPEN 1      // TODO: figure out which is open and close
-#define CLOSE 0
+#define IN1_RIGHT PB_5
+#define IN2_RIGHT PB_3
+#define IN3_RIGHT PA_4
+#define IN4_RIGHT PB_4
+
+#define MODE 0           // TODO: Which mode?
+#define OPEN_LEFT 1      // TODO: figure out which is open and close
+#define CLOSE_RIGHT 0
+#define OPEN_RIGHT 0
+#define CLOSE_LEFT 1
 #define STEP_MULT 5
 
 #define DHT_DELAY 30
 
 EventQueue EQ(32 * EVENTS_EVENT_SIZE);
+EventQueue STEPPER_LEFT_EQ(32 * EVENTS_EVENT_SIZE);
+EventQueue STEPPER_RIGHT_EQ(32 * EVENTS_EVENT_SIZE);
+
 Ticker DHT_READ;
+
+Thread STEPPER_LEFT_THREAD;
+Thread STEPPER_RIGHT_THREAD;
 
 DHT11 dht(DHT);
 Photoresistor light(LIGHT);
-Stepper stepper(IN1, IN2, IN3, IN4);
+Stepper stepper_left(IN1_LEFT, IN2_LEFT, IN3_LEFT, IN4_LEFT);
+Stepper stepper_right(IN1_RIGHT, IN2_RIGHT, IN3_RIGHT, IN4_RIGHT);
+
 
 float get_steps(int, int);
 int update_step(int, int);
 void dht_reader();
+void stepper_wrapper(Stepper step, int mode, int dir);
 
 int main()
 {
-    
+    STEPPER_LEFT_THREAD.start(callback(&STEPPER_LEFT_EQ, &EventQueue::dispatch_forever));
+    STEPPER_RIGHT_THREAD.start(callback(&STEPPER_RIGHT_EQ, &EventQueue::dispatch_forever));
+
     DHT_READ.attach(EQ.event(dht_reader), 2s);
     dht.read();
     int count = 0;
@@ -76,18 +94,18 @@ int main()
             }
 
             steps = update_step(step_size, prev_step);
-            printf("stepsize%d\n", steps);
             prev_step = step_size;
             while(steps > 0){
                 steps--;
-                stepper.step_rot(MODE, CLOSE);
+                STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, CLOSE_LEFT);
+                STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, CLOSE_RIGHT);
             }
             while(steps < 0){
                 steps++;
-                stepper.step_rot(MODE, OPEN);
+                STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
+                STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
             }
         }
-
         EQ.dispatch_once();
         thread_sleep_for(500);
     }
@@ -105,5 +123,9 @@ int update_step(int current, int prev){
 
 void dht_reader(){
     dht.read();
+}
+
+void stepper_wrapper(Stepper step, int mode, int dir){
+    step.step_rot(mode, dir);
 }
 
