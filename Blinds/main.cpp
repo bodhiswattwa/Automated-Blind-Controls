@@ -18,7 +18,7 @@
 #include "photoresistor.h"
 
 #define DHT PA_3        // pin for DHT11
-#define LIGHT PA_4      // pin for light sensor
+#define LIGHT PA_5      // pin for light sensor
 #define IN1_LEFT PC_6
 #define IN2_LEFT PB_15
 #define IN3_LEFT PB_13
@@ -34,7 +34,7 @@
 #define CLOSE_RIGHT 0
 #define OPEN_RIGHT 0
 #define CLOSE_LEFT 1
-#define STEP_MULT 5
+#define STEP_MULT 15
 
 #define DHT_DELAY 30
 
@@ -77,43 +77,45 @@ int main()
                                     - halfway (step = 3, half step = 1)
                                     - closed-ish (steps = 5, half = 1) 
                                     - closed (step = 7)
-        */
+                                    */
 
-        if(!dht.getError()){
-            step_get = get_steps(light.get_intensity(), dht.getCelsius());
-            if(step_get < 25 && step_get > 20){
-                step_size = 14;
-            }else if(step_get < 20 && step_get > 15){
-                step_size = 11;
-            }else if(step_get < 15 && step_get > 10){
-                step_size = 7;
-            }else if(step_get < 10 && step_get > 5){
-                step_size = 3;
-            }else{
-                step_size = 0;
-            }
+        // if(!dht.getError()){
+        //     step_get = get_steps(light.get_intensity(), dht.getCelsius());
+        //     int lightInfo = light.read();
+        //     printf("Intensity Level: %d\n", lightInfo);
+        //     printf("Step Info: %f\n",step_get);
+        //     if(step_get < 25 && step_get > 20){
+        //         step_size = 14;
+        //     }else if(step_get < 20 && step_get > 15){
+        //         step_size = 11;
+        //     }else if(step_get < 15 && step_get > 10){
+        //         step_size = 7;
+        //     }else if(step_get < 10 && step_get > 5){
+        //         step_size = 3;
+        //     }else{
+        //         step_size = 0;
+        //     }
 
-            steps = update_step(step_size, prev_step);
-<<<<<<< Updated upstream
-=======
-            if (steps != 0){
-                printf("stepsize%d\n", steps);
-            }
->>>>>>> Stashed changes
-            prev_step = step_size;
-            while(steps > 0){
-                steps--;
-                STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, CLOSE_LEFT);
-                STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, CLOSE_RIGHT);
-            }
-            while(steps < 0){
-                steps++;
-                STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
-                STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
-            }
-        }
+        //     steps = update_step(step_size, prev_step);
+        //     if (steps != 0){
+        //         printf("stepsize%d\n", steps);
+        //     }
+        //     prev_step = step_size;
+        //     while(steps > 0){
+        //         steps--;
+        //         STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, CLOSE_LEFT);
+        //         STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, CLOSE_RIGHT);
+        //     }
+        //     while(steps < 0){
+        //         steps++;
+        //         STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
+        //         STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
+        //     }
+        // }
+        
+        printf("%d\n", light.read());
         EQ.dispatch_once();
-        thread_sleep_for(500);
+        thread_sleep_for(1000);
     }
 
 
