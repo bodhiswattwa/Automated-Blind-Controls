@@ -24,24 +24,24 @@
 #define IN3_LEFT PB_13
 #define IN4_LEFT PB_12
 
-#define IN1_RIGHT PB_5
-#define IN2_RIGHT PB_3
-#define IN3_RIGHT PA_4
-#define IN4_RIGHT PB_4
+#define IN1_RIGHT PA_7
+#define IN2_RIGHT PD_14
+#define IN3_RIGHT PD_15
+#define IN4_RIGHT PF_12
 
 #define MODE 0           // TODO: Which mode?
-#define OPEN_LEFT 1      // TODO: figure out which is open and close
-#define CLOSE_RIGHT 0
+#define OPEN_LEFT 1
+#define CLOSE_LEFT 0
+#define CLOSE_RIGHT 1
 #define OPEN_RIGHT 0
-#define CLOSE_LEFT 1
-#define STEP_MULT 5
+#define STEP_MULT 1
 
 #define DHT_DELAY 30
 
 /* Event Queues */
 EventQueue EQ(32 * EVENTS_EVENT_SIZE);                  // DHT11
-EventQueue STEPPER_LEFT_EQ(32 * EVENTS_EVENT_SIZE);     // Stepper Left
-EventQueue STEPPER_RIGHT_EQ(32 * EVENTS_EVENT_SIZE);    // Stepper Right
+EventQueue STEPPER_LEFT_EQ(512 * EVENTS_EVENT_SIZE);     // Stepper Left
+EventQueue STEPPER_RIGHT_EQ(512 * EVENTS_EVENT_SIZE);    // Stepper Right
 
 /* Timer interrupt for DHT */
 Ticker DHT_READ;
@@ -74,6 +74,7 @@ int main()
     int steps = 0;
     int step_size;
     float step_get;
+    printf("\n\nRerunning\n\n");
     while (true) {
         /* update blind positions -> 
                                     - open = 0 (full step = 0) 
@@ -82,25 +83,24 @@ int main()
                                     - closed-ish (steps = 5, half = 1) 
                                     - closed (step = 7)
         */
-
         if(!dht.getError()){
             step_get = get_steps(light.get_intensity(), dht.getCelsius());
             if(step_get < 25 && step_get > 20){
-                step_size = 14;
+                step_size = 80;
             }else if(step_get < 20 && step_get > 15){
-                step_size = 11;
+                step_size = 60;
             }else if(step_get < 15 && step_get > 10){
-                step_size = 7;
+                step_size = 40;
             }else if(step_get < 10 && step_get > 5){
-                step_size = 3;
+                step_size = 20;
             }else{
                 step_size = 0;
             }
 
             steps = update_step(step_size, prev_step);
-            if (steps != 0){
-                printf("stepsize%d\n", steps);
-            }
+        
+            printf("stepsize = %d\n", steps);
+
             prev_step = step_size;
             while(steps > 0){
                 steps--;
