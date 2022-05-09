@@ -65,6 +65,10 @@ By setting the 𝑲_𝒅 as 2.0, we combat the undesirable transient response ti
 
 ![Screenshot 2022-05-09 at 1 39 34 PM](https://user-images.githubusercontent.com/66216074/167466983-e798a709-d0f5-4051-b974-57385bf1a0c3.png)
 
+Figure 1 - Control System Diagram
+
 ![Screenshot 2022-05-09 at 1 39 44 PM](https://user-images.githubusercontent.com/66216074/167466999-70f748e4-e964-4eb9-bc1c-1bf45f589d1a.png)
+
+Figure 2 - Preliminary blind controls. Red line supports turning of blinds using stepper motor. Blue line spaces blinds during opening and closing.
 
 
