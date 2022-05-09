@@ -22,14 +22,14 @@ The microcontroller that used for all of the functionalities is the **STM32 L4R5
 
 **Input Peripherals:** 
 <ul> 
-<li> A photoresistor or a light-dependent resistor decreases the resistance with respect to the level of luminosity on the component’s sensitive surface. </li>
+<li> <strong>A photoresistor or a light-dependent resistor </strong> decreases the resistance with respect to the level of luminosity on the component’s sensitive surface. </li>
 
-<li> A temperature and humidity sensor measures the temperature of the surrounding area. The control system depends on the feedback of the DHT11. </li>
+<li> <strong>A temperature and humidity sensor</strong> measures the temperature of the surrounding area. The control system depends on the feedback of the DHT11. </li>
 </ul>
 
 **Output Peripherals:** 
 <ul> 
-<li> A stepper motor, also commonly known as a step motor or stepping motor, is a DC electric motor that divides a full rotation into a number of equal steps. </li>
+<li> <strong>A stepper motor</strong>, also commonly known as a step motor or stepping motor, is a DC electric motor that divides a full rotation into a number of equal steps. </li>
 
 <li> LED 7-segment display is used to determine the degree of  closed or opened the blinds are. </li>
 </ul>
@@ -50,12 +50,12 @@ By setting the 𝑲_𝒅 as 2.0, we combat the undesirable transient response ti
 <li> <strong>DHT.cpp and DHT.h:</strong> These files allow the reading from the DHT11 sensor. Once humidity and temperature of the surrounding is recorded, it can be displayed in degrees Celsius or Fahrenheit. 
 </li>
 
-<li> photoresistor.cpp and photoresistor.h: These files allow the reading from the photoresistor. Once the degree of ambient light is recorded, it outputs an intensity level of the light, ranging from 1 to 5, with 5 being the largest intensity. 
+<li><strong>photoresistor.cpp and photoresistor.h:</strong> These files allow the reading from the photoresistor. Once the degree of ambient light is recorded, it outputs an intensity level of the light, ranging from 1 to 5, with 5 being the largest intensity. 
 </li>
 
-<li> stepper.cpp and stepper.h: These files allow the movement of the stepper motor by being passed through the main function. The mode, 0 for wave drive, 1 for a full step and 2 for a halfstep, and the direction, either clockwise or anticlockwise, determines the movement of the stepper in that mode and direction.
+<li><strong>stepper.cpp and stepper.h:</strong> These files allow the movement of the stepper motor by being passed through the main function. The mode, 0 for wave drive, 1 for a full step and 2 for a halfstep, and the direction, either clockwise or anticlockwise, determines the movement of the stepper in that mode and direction.
 </li>
-<li> main.cpp: The main function is the spine of the program and allows for the synchronization of the other functions. It controls the functionality of the embedded control system and allows for the stepper motor to output according to the other peripherals.
+<li><strong>main.cpp: </strong> The main function is the spine of the program and allows for the synchronization of the other functions. It controls the functionality of the embedded control system and allows for the stepper motor to output according to the other peripherals.
 </li>
 </ol>
 
