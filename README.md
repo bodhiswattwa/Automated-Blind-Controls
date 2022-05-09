@@ -22,9 +22,9 @@ The microcontroller that used for all of the functionalities is the **STM32 L4R5
 
 **Input Peripherals:** 
 <ul> 
-<li> **A photoresistor or a light-dependent resistor** decreases the resistance with respect to the level of luminosity on the component’s sensitive surface. </li>
+<li> A photoresistor or a light-dependent resistor decreases the resistance with respect to the level of luminosity on the component’s sensitive surface. </li>
 
-<li> **A temperature and humidity sensor** measures the temperature of the surrounding area. The control system depends on the feedback of the DHT11. </li>
+<li> A temperature and humidity sensor measures the temperature of the surrounding area. The control system depends on the feedback of the DHT11. </li>
 </ul>
 
 **Output Peripherals:** 
@@ -47,7 +47,7 @@ By setting the 𝑲_𝒅 as 2.0, we combat the undesirable transient response ti
 ------------------------------------------------------------------------------
 
 <ol>
-<li> **DHT.cpp and DHT.h:** These files allow the reading from the DHT11 sensor. Once humidity and temperature of the surrounding is recorded, it can be displayed in degrees Celsius or Fahrenheit. 
+<li> <strong>DHT.cpp and DHT.h:</strong> These files allow the reading from the DHT11 sensor. Once humidity and temperature of the surrounding is recorded, it can be displayed in degrees Celsius or Fahrenheit. 
 </li>
 
 <li> photoresistor.cpp and photoresistor.h: These files allow the reading from the photoresistor. Once the degree of ambient light is recorded, it outputs an intensity level of the light, ranging from 1 to 5, with 5 being the largest intensity. 
@@ -55,7 +55,7 @@ By setting the 𝑲_𝒅 as 2.0, we combat the undesirable transient response ti
 
 <li> stepper.cpp and stepper.h: These files allow the movement of the stepper motor by being passed through the main function. The mode, 0 for wave drive, 1 for a full step and 2 for a halfstep, and the direction, either clockwise or anticlockwise, determines the movement of the stepper in that mode and direction.
 </li>
-<li> main.cpp: The main function is the spine of the program and allows for the synchronization of the other functions. It controls the functionality of the embedded control system and 
+<li> main.cpp: The main function is the spine of the program and allows for the synchronization of the other functions. It controls the functionality of the embedded control system and allows for the stepper motor to output according to the other peripherals.
 </li>
 </ol>
 
