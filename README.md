@@ -18,9 +18,10 @@ The microcontroller that used for all of the functionalities is the **STM32 L4R5
 
 **Input Peripherals:** 
 <ul> 
-<li> A photoresistor or a light-dependent resistor decreases the resistance with respect to the level of luminosity on the component’s sensitive surface. </li>
+<li> **A photoresistor or a light-dependent resistor** decreases the resistance with respect to the level of luminosity on the component’s sensitive surface. </li>
 
-<li> A temperature and humidity sensor measures the temperature of the surrounding area. The control system depends on the feedback of the DHT11. </li>
+<li> **A temperature and humidity sensor** measures the temperature of the surrounding area. The control system depends on the feedback of the DHT11. </li>
+</ul>
 
-<li> An infrared sensor built into a remote control will automate the blinds’ movements. </li>
+
 
