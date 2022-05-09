@@ -28,7 +28,7 @@ int Photoresistor::get_intensity() {
     if(_light > 50000){
         _intensity = 5;
     } 
-    else if (_light > 40000 ){
+    else if (_light > 40000){
         _intensity = 4;
     } 
     else if(_light > 30000){

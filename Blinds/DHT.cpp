@@ -101,7 +101,7 @@ int DHT11::read() {
  
     if (bits[4] != sum) {
         _error = false;
-        printf("\nChecksum: Temperature may be incorrect.\nTemperature: %d\nHumidity: %d\nSum: %d\n\n", _temperature, _humidity, sum);
+        // printf("\nChecksum: Temperature may be incorrect.\nTemperature: %d\nHumidity: %d\nSum: %d\n\n", _temperature, _humidity, sum);
         return DHTLIB_ERROR_CHECKSUM;
     }
     _error = false;
