@@ -47,7 +47,7 @@ By setting the 𝑲_𝒅 as 2.0, we combat the undesirable transient response ti
 ------------------------------------------------------------------------------
 
 <ol>
-<li> DHT.cpp and DHT.h: These files allow the reading from the DHT11 sensor. Once humidity and temperature of the surrounding is recorded, it can be displayed in degrees Celsius or Fahrenheit. 
+<li> **DHT.cpp and DHT.h:** These files allow the reading from the DHT11 sensor. Once humidity and temperature of the surrounding is recorded, it can be displayed in degrees Celsius or Fahrenheit. 
 </li>
 
 <li> photoresistor.cpp and photoresistor.h: These files allow the reading from the photoresistor. Once the degree of ambient light is recorded, it outputs an intensity level of the light, ranging from 1 to 5, with 5 being the largest intensity. 
