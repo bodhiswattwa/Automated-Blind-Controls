@@ -11,3 +11,16 @@ A typical household loses about 10% of its heat through its windows. In an indus
 **Real-Time Operating System:** RTOS, or commonly known as Real-Time Operating System, is a software component that rapidly switches between tasks, giving the impression that multiple programs are being executed at the same time on a single processing core.
 
 **Proportional, Integral and Differential Controller:** PID or a Proportional, Integral and Differential Controller sets to a certain reference as preferred ambient lighting in a room, thereby letting the controller adjust the blinds towards that reference value while conditions outside and inside change during the day. The controller regulates the light that is let through the blind based on a predefined reference value chosen as the amount of indoor lighting.
+
+## Design Process
+
+The microcontroller that used for all of the functionalities is the **STM32 L4R5ZI Nucleo-144**.
+
+**Input Peripherals:** 
+<ul> 
+<li> A photoresistor or a light-dependent resistor decreases the resistance with respect to the level of luminosity on the component’s sensitive surface. </li>
+
+<li> A temperature and humidity sensor measures the temperature of the surrounding area. The control system depends on the feedback of the DHT11. </li>
+
+<li> An infrared sensor built into a remote control will automate the blinds’ movements. </li>
+
