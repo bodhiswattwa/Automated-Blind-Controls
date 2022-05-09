@@ -43,7 +43,7 @@ By setting the 𝑲_𝒊 as 1.0, again, we reduce the rise time substantially an
 
 By setting the 𝑲_𝒅 as 2.0, we combat the undesirable transient response time and overshooting by making this value higher, which only results in a small change in the rise time.
 
-## Files and Function
+### Files and Function
 ------------------------------------------------------------------------------
 
 <ol>
