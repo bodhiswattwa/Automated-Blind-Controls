@@ -31,7 +31,7 @@ The microcontroller that used for all of the functionalities is the **STM32 L4R5
 <ul> 
 <li> <strong>A stepper motor</strong>, also commonly known as a step motor or stepping motor, is a DC electric motor that divides a full rotation into a number of equal steps. </li>
 
-<li> LED 7-segment display is used to determine the degree of  closed or opened the blinds are. </li>
+<li> <strong>LED 7-segment display</strong> is used to determine the degree of  closed or opened the blinds are. </li>
 </ul>
 
 ### More on the PID
