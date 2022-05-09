@@ -1,6 +1,6 @@
 ## Automated Blind Control System
-#### CSE 499: Independent Study on Embedded Controls
-##### Collaborators: Avi Tombak, Bodhiswattwa Basu, Gabriel Yengle & Jesse Both
+### CSE 499: Independent Study on Embedded Controls
+#### Collaborators: Avi Tombak, Bodhiswattwa Basu, Gabriel Yengle & Jesse Both
 
 ### About the Project
 A typical household loses about 10% of its heat through its windows. In an industrial building, the amount of heat energy loss would be at least thrice the amount. To counteract this loss of heat energy, heater and air ventilation systems produce more heat. This energy inefficiency could be cut down sufficiently with smart blind control. The embedded control system will take into account the amount of transient light available and the external temperature to deduce if the blinds need to be drawn or not. 
