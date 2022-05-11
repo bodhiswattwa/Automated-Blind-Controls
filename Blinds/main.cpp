@@ -9,6 +9,7 @@
 //      2. PinNames.h
 //      3. mbed.h
 
+#include "EventQueue.h"
 #include "InterruptIn.h"
 #include "mbed.h"
 #include "PinNames.h"
@@ -54,6 +55,7 @@ Ticker DHT_READ;
 /* Threads for each stepper */
 Thread STEPPER_LEFT_THREAD;
 Thread STEPPER_RIGHT_THREAD;
+Thread EQ_THREAD;
 
 /* Initialize Peripherals */
 DHT11 dht(DHT);
@@ -69,7 +71,7 @@ void stepper_wrapper(Stepper step, int mode, int dir);
 void reset(void);
 
 int current_step;
-bool reset_flag = true;
+bool reset_flag = false;
 
 
 int main()
@@ -77,7 +79,7 @@ int main()
     button.rise(EQ.event(reset));
     STEPPER_LEFT_THREAD.start(callback(&STEPPER_LEFT_EQ, &EventQueue::dispatch_forever));
     STEPPER_RIGHT_THREAD.start(callback(&STEPPER_RIGHT_EQ, &EventQueue::dispatch_forever));
-
+    EQ_THREAD.start(callback(&EQ, &EventQueue::dispatch_forever));
     DHT_READ.attach(EQ.event(dht_reader), 2s);
     dht.read();
     int count = 0;
@@ -96,7 +98,7 @@ int main()
                                     - closed (step = 7)
         */
         prev_step = current_step;
-        if(!dht.getError()){
+        if(!dht.getError() && !reset_flag){
             step_get = get_steps(light.get_intensity(), dht.getCelsius());
             if(step_get < 25 && step_get > 20){
                 step_size = 100;
@@ -127,7 +129,6 @@ int main()
             }
             
         }
-        EQ.dispatch_once();
         thread_sleep_for(2500);
     }
 
@@ -151,19 +152,18 @@ void stepper_wrapper(Stepper step, int mode, int dir){
 }
 
 void reset(){
-    reset_flag = false;
-    STEPPER_LEFT_EQ.call(printf, "current_step = %d \n", current_step);
-    while(current_step < 0){
-        current_step++;
-        STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, CLOSE_LEFT);
-        STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, CLOSE_RIGHT);
+    reset_flag = !reset_flag;
+    if(reset_flag){
+        while(current_step < 0){
+            current_step++;
+            STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, CLOSE_LEFT);
+            STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, CLOSE_RIGHT);
+        }
+        while(current_step > 0){
+            current_step--;
+            STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
+            STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
     }
-    while(current_step > 0){
-        current_step--;
-        STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
-        STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
     }
-
-    reset_flag = true;
 }
 
