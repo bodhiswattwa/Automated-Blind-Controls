@@ -21,7 +21,7 @@
 #include <exception>
 
 #define DHT PA_3        // pin for DHT11
-#define LIGHT PA_4      // pin for light sensor
+#define LIGHT PA_5      // pin for light sensor
 #define IN1_LEFT PC_6
 #define IN2_LEFT PB_15
 #define IN3_LEFT PB_13

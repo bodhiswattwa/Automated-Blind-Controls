@@ -19,7 +19,7 @@ Photoresistor::Photoresistor(PinName const &p) : _pin(p) {
 }
  
 int Photoresistor::read() { //performs C to F conversion
-    _light = _pin.read_u16();
+    _light = (int)_pin.read_u16();
     return _light;
 }
  
