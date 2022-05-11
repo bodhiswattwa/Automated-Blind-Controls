@@ -9,6 +9,7 @@
 //      2. PinNames.h
 //      3. mbed.h
 
+#include "InterruptIn.h"
 #include "mbed.h"
 #include "PinNames.h"
 
@@ -16,6 +17,7 @@
 #include "mbed_thread.h"
 #include "stepper.h"
 #include "photoresistor.h"
+#include <exception>
 
 #define DHT PA_3        // pin for DHT11
 #define LIGHT PA_5      // pin for light sensor
@@ -40,8 +42,11 @@
 
 /* Event Queues */
 EventQueue EQ(32 * EVENTS_EVENT_SIZE);                  // DHT11
-EventQueue STEPPER_LEFT_EQ(512 * EVENTS_EVENT_SIZE);     // Stepper Left
-EventQueue STEPPER_RIGHT_EQ(512 * EVENTS_EVENT_SIZE);    // Stepper Right
+EventQueue STEPPER_LEFT_EQ(1024 * EVENTS_EVENT_SIZE);     // Stepper Left
+EventQueue STEPPER_RIGHT_EQ(1024 * EVENTS_EVENT_SIZE);    // Stepper Right
+
+/* Interrupts */
+InterruptIn button(BUTTON1);
 
 /* Timer interrupt for DHT */
 Ticker DHT_READ;
@@ -61,9 +66,15 @@ float get_steps(int, int);
 int update_step(int, int);
 void dht_reader();
 void stepper_wrapper(Stepper step, int mode, int dir);
+void reset(void);
+
+int current_step;
+bool reset_flag = true;
+
 
 int main()
 {
+    button.rise(EQ.event(reset));
     STEPPER_LEFT_THREAD.start(callback(&STEPPER_LEFT_EQ, &EventQueue::dispatch_forever));
     STEPPER_RIGHT_THREAD.start(callback(&STEPPER_RIGHT_EQ, &EventQueue::dispatch_forever));
 
@@ -74,6 +85,7 @@ int main()
     int steps = 0;
     int step_size;
     float step_get;
+    current_step = 0;
     printf("\n\nRerunning\n\n");
     while (true) {
         /* update blind positions -> 
@@ -83,25 +95,26 @@ int main()
                                     - closed-ish (steps = 5, half = 1) 
                                     - closed (step = 7)
         */
+        prev_step = current_step;
         if(!dht.getError()){
             step_get = get_steps(light.get_intensity(), dht.getCelsius());
             if(step_get < 25 && step_get > 20){
-                step_size = 80;
+                step_size = 100;
             }else if(step_get < 20 && step_get > 15){
-                step_size = 60;
+                step_size = 75;
             }else if(step_get < 15 && step_get > 10){
-                step_size = 40;
+                step_size = 50;
             }else if(step_get < 10 && step_get > 5){
-                step_size = 20;
+                step_size = 25;
             }else{
                 step_size = 0;
             }
+            current_step = step_size;
 
             steps = update_step(step_size, prev_step);
         
             printf("stepsize = %d\n", steps);
-
-            prev_step = step_size;
+            
             while(steps > 0){
                 steps--;
                 STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, CLOSE_LEFT);
@@ -112,9 +125,10 @@ int main()
                 STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
                 STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
             }
+            
         }
         EQ.dispatch_once();
-        thread_sleep_for(1000);
+        thread_sleep_for(2500);
     }
 
 
@@ -134,5 +148,22 @@ void dht_reader(){
 
 void stepper_wrapper(Stepper step, int mode, int dir){
     step.step_rot(mode, dir);
+}
+
+void reset(){
+    reset_flag = false;
+    STEPPER_LEFT_EQ.call(printf, "current_step = %d \n", current_step);
+    while(current_step < 0){
+        current_step++;
+        STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, CLOSE_LEFT);
+        STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, CLOSE_RIGHT);
+    }
+    while(current_step > 0){
+        current_step--;
+        STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
+        STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
+    }
+
+    reset_flag = true;
 }
 
