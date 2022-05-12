@@ -191,7 +191,6 @@ void reset(){
     if(re_entry){
         reset_flag = !reset_flag;
         LED = !LED;    
-        printf("Reset: %d\n", reset_flag);
         if(reset_flag){
             re_entry = false;
             while(current_step < 0){
