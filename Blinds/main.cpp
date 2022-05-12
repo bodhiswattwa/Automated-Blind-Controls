@@ -71,6 +71,7 @@ void stepper_wrapper(Stepper step, int mode, int dir);
 void reset(void);
 
 int current_step;
+int current_temp;
 bool reset_flag = false;
 
 
@@ -100,14 +101,21 @@ int main()
         prev_step = current_step;
         if(!dht.getError() && !reset_flag){
             step_get = get_steps(light.get_intensity(), dht.getCelsius());
-            if(step_get < 25 && step_get > 20){
-                step_size = 100;
-            }else if(step_get < 20 && step_get > 15){
-                step_size = 75;
-            }else if(step_get < 15 && step_get > 10){
-                step_size = 50;
-            }else if(step_get < 10 && step_get > 5){
+            printf("Current Temp: %d\n", dht.getCelsius());
+            if (current_temp != dht.getCelsius()){
+                current_temp = dht.getCelsius();
+                thread_sleep_for(2500);
+                continue;
+            }
+            printf("stepget Value: %f\n", step_get);
+            if(step_get < 25 && step_get >= 20){
                 step_size = 25;
+            }else if(step_get < 20 && step_get >= 15){
+                step_size = 50;
+            }else if(step_get < 15 && step_get >= 10){
+                step_size = 75;
+            }else if(step_get < 10 && step_get >= 5){
+                step_size = 100;
             }else{
                 step_size = 0;
             }
