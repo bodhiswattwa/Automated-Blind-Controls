@@ -25,6 +25,7 @@ int Photoresistor::read() { //performs C to F conversion
  
 int Photoresistor::get_intensity() {
     read();
+    printf("Light Intensity: %d\n", _light);
     if(_light > 50000){
         _intensity = 5;
     } 
