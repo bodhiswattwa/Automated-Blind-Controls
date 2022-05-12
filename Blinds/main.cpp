@@ -38,7 +38,7 @@
 #define OPEN_RIGHT 0
 #define STEP_MULT 1
 
-#define DHT_DELAY 30
+#define SLEEP 1000
 
 /* Event Queues */
 EventQueue EQ(32 * EVENTS_EVENT_SIZE);                  // DHT11
@@ -47,6 +47,7 @@ EventQueue STEPPER_RIGHT_EQ(1024 * EVENTS_EVENT_SIZE);    // Stepper Right
 
 /* Interrupts */
 InterruptIn button(BUTTON1);
+DigitalOut LED(LED1);
 
 /* Timer interrupt for DHT */
 Ticker DHT_READ;
@@ -71,12 +72,15 @@ void reset(void);
 
 int current_step;           // value to iterate steppers back to default state
 bool reset_flag = false;    // flag to wait for another press
+bool re_entry = true;
 
 
 int main()
 {
     /* setup button handler */
+    button.mode(PullDown);
     button.rise(EQ.event(reset));
+    LED = 0;
 
     /* setup stepper threads and queues */
     STEPPER_LEFT_THREAD.start(callback(&STEPPER_LEFT_EQ, &EventQueue::dispatch_forever));
@@ -99,12 +103,13 @@ int main()
     current_step = 0;
     while (true) {
         prev_step = current_step;
+        
         if(!dht.getError() && !reset_flag){
             step_get = get_steps(light.get_intensity(), dht.getCelsius());
 
             /* check to see if the reading is valid */
             if (!dht.isValid()){
-                thread_sleep_for(2500);
+                thread_sleep_for(SLEEP);
                 continue;
             }
             if(step_get < 25 && step_get >= 20){
@@ -137,7 +142,8 @@ int main()
                 STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
             }
         }
-        thread_sleep_for(2500);
+        re_entry = true;
+        thread_sleep_for(SLEEP);
     }
 
 
@@ -178,18 +184,23 @@ void stepper_wrapper(Stepper step, int mode, int dir){
 
 /* reset the steppers to the default state */
 void reset(){
-    reset_flag = !reset_flag;
-    if(reset_flag){
-        while(current_step < 0){
-            current_step++;
-            STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, CLOSE_LEFT);
-            STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, CLOSE_RIGHT);
+    if(re_entry){
+        reset_flag = !reset_flag;
+        LED = !LED;    
+        printf("Reset: %d\n", reset_flag);
+        if(reset_flag){
+            re_entry = false;
+            while(current_step < 0){
+                current_step++;
+                STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, CLOSE_LEFT);
+                STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, CLOSE_RIGHT);
+            }
+            while(current_step > 0){
+                current_step--;
+                STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
+                STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
+            }
         }
-        while(current_step > 0){
-            current_step--;
-            STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
-            STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
-    }
     }
 }
 
