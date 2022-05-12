@@ -66,8 +66,19 @@ public:
      */
     int getHumidity();
 
+
+    /** Check if dht read error was thrown.
+     *
+     * @returns
+     *   dht read error bool
+     */
     bool getError();
 
+    /** Check if temperaure is valid.
+     *
+     * @returns
+     *   valid temperature bool
+     */
     bool isValid();
  
 private:
