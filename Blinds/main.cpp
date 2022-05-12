@@ -70,26 +70,35 @@ void dht_reader();
 void stepper_wrapper(Stepper step, int mode, int dir);
 void reset(void);
 
-int current_step;
-int current_temp;
-bool reset_flag = false;
+int current_step;           // value to iterate steppers back to default state
+bool reset_flag = false;    // flag to wait for another press
 
 
 int main()
 {
+    /* setup button handler */
     button.rise(EQ.event(reset));
+
+    /* setup stepper threads and queues */
     STEPPER_LEFT_THREAD.start(callback(&STEPPER_LEFT_EQ, &EventQueue::dispatch_forever));
     STEPPER_RIGHT_THREAD.start(callback(&STEPPER_RIGHT_EQ, &EventQueue::dispatch_forever));
+
+    /* general purpose queue */
     EQ_THREAD.start(callback(&EQ, &EventQueue::dispatch_forever));
+
+    /* dht timer interrupt */
     DHT_READ.attach(EQ.event(dht_reader), 2s);
-    dht.read();
-    int count = 0;
-    int prev_step = 0;
-    int steps = 0;
-    int step_size;
-    float step_get;
+
+    dht.read();     // get initial value.
+
+    int prev_step = 0;      // determine how far to rotate relative to last position
+    int steps = 0;          // number of steps to rotate 
+    int step_size;          // step size before calculation
+    float step_get;         // normalized step to make light and temp at same scale
+    int current_temp;       // the current temperature
+
+
     current_step = 0;
-    printf("\n\nRerunning\n\n");
     while (true) {
         /* update blind positions -> 
                                     - open = 0 (full step = 0) 
@@ -101,13 +110,13 @@ int main()
         prev_step = current_step;
         if(!dht.getError() && !reset_flag){
             step_get = get_steps(light.get_intensity(), dht.getCelsius());
-            printf("Current Temp: %d\n", dht.getCelsius());
+
+            /* check to see if the reading is valid */
             if (current_temp != dht.getCelsius()){
                 current_temp = dht.getCelsius();
                 thread_sleep_for(2500);
                 continue;
             }
-            printf("stepget Value: %f\n", step_get);
             if(step_get < 25 && step_get >= 20){
                 step_size = 25;
             }else if(step_get < 20 && step_get >= 15){
@@ -122,7 +131,9 @@ int main()
             current_step = step_size;
 
             steps = update_step(step_size, prev_step);
-        
+
+            printf("Current Temp: %d\n", dht.getCelsius());
+            printf("stepget Value: %f\n", step_get);        
             printf("stepsize = %d\n", steps);
             
             while(steps > 0){
@@ -135,7 +146,6 @@ int main()
                 STEPPER_LEFT_EQ.call(stepper_wrapper, stepper_left, MODE, OPEN_LEFT);
                 STEPPER_RIGHT_EQ.call(stepper_wrapper, stepper_right, MODE, OPEN_RIGHT);
             }
-            
         }
         thread_sleep_for(2500);
     }
@@ -143,22 +153,40 @@ int main()
 
 }
 
+
+/* get light and temperature on same scale
+      @param light_int: light intensity value
+      @param temp: temperature in C
+      @return light_int * (temp/7)
+*/
 float get_steps(int light_int, int temp){
     return (float)light_int * (temp/7.0);
 }
 
+/* get step relative to previous step 
+    @param current: current step
+    @param prev: previous step
+    @return current - prev
+*/
 int update_step(int current, int prev){
     return ((current - prev) * STEP_MULT);
 }
 
+/* wrapper to read from dht11 */
 void dht_reader(){
     dht.read();
 }
 
+/* stepper wrapper to rotate stepper 
+    @param step: Stepper class 
+    @param mode: type of rotation
+    @param dir: direction for rotation
+*/
 void stepper_wrapper(Stepper step, int mode, int dir){
     step.step_rot(mode, dir);
 }
 
+/* reset the steppers to the default state */
 void reset(){
     reset_flag = !reset_flag;
     if(reset_flag){
