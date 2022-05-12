@@ -47,7 +47,8 @@ EventQueue STEPPER_RIGHT_EQ(1024 * EVENTS_EVENT_SIZE);    // Stepper Right
 
 /* Interrupts */
 InterruptIn button(BUTTON1);
-DigitalOut LED(LED1);
+DigitalOut LED(LED2);
+DigitalOut LEDERR(LED3);
 
 /* Timer interrupt for DHT */
 Ticker DHT_READ;
@@ -81,6 +82,7 @@ int main()
     button.mode(PullDown);
     button.rise(EQ.event(reset));
     LED = 0;
+    LEDERR = 0;
 
     /* setup stepper threads and queues */
     STEPPER_LEFT_THREAD.start(callback(&STEPPER_LEFT_EQ, &EventQueue::dispatch_forever));
@@ -108,10 +110,16 @@ int main()
             step_get = get_steps(light.get_intensity(), dht.getCelsius());
 
             /* check to see if the reading is valid */
-            if (!dht.isValid()){
+            if(!dht.isValid() || dht.getCelsius() == 0){
+                LEDERR = 1;
                 thread_sleep_for(SLEEP);
                 continue;
             }
+            else{
+                LEDERR = 0;
+            }
+
+            /* convert values */
             if(step_get < 25 && step_get >= 20){
                 step_size = 25;
             }else if(step_get < 20 && step_get >= 15){
