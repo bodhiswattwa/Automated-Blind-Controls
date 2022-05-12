@@ -134,10 +134,6 @@ int main()
             current_step = step_size;
 
             steps = update_step(step_size, prev_step);
-
-            printf("Current Temp: %d\n", dht.getCelsius());
-            printf("stepget Value: %f\n", step_get);        
-            printf("stepsize = %d\n", steps);
             
             while(steps > 0){
                 steps--;
