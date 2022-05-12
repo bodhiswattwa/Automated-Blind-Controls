@@ -21,6 +21,8 @@ DHT11::DHT11(PinName const &p) : _pin(p) {
     _temperature = 0; //default unit of Celcius 
     _humidity = 0;
     _error = false;
+    _valid = true;
+    _prev_temperature = 0;
 }
 
 int DHT11::read() {
@@ -92,6 +94,11 @@ int DHT11::read() {
         }
         else cnt--;
     }
+
+    if(_prev_temperature == _temperature){_valid = true;}
+    else{_valid = false;}
+
+    _prev_temperature = _temperature;
  
     // WRITE TO RIGHT VARS
     // as bits[1] and bits[3] are allways zero they are omitted in formulas.
@@ -121,4 +128,8 @@ int DHT11::getHumidity() {
 
 bool DHT11::getError(){
     return _error;
+}
+
+bool DHT11::isValid(){
+    return _valid;
 }

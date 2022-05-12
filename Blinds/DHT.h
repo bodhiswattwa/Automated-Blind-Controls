@@ -67,6 +67,8 @@ public:
     int getHumidity();
 
     bool getError();
+
+    bool isValid();
  
 private:
     /// percentage of humidity
@@ -75,6 +77,8 @@ private:
     int _temperature;
 
     bool _error;
+    bool _valid;
+    int _prev_temperature;
     /// pin to read the sensor info on
     DigitalInOut _pin;
     /// times startup (must settle for at least a second)

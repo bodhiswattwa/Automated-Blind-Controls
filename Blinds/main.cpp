@@ -95,25 +95,16 @@ int main()
     int steps = 0;          // number of steps to rotate 
     int step_size;          // step size before calculation
     float step_get;         // normalized step to make light and temp at same scale
-    int current_temp;       // the current temperature
 
 
     current_step = 0;
     while (true) {
-        /* update blind positions -> 
-                                    - open = 0 (full step = 0) 
-                                    - open-ish (full step = 1, half step = 1)
-                                    - halfway (step = 3, half step = 1)
-                                    - closed-ish (steps = 5, half = 1) 
-                                    - closed (step = 7)
-        */
         prev_step = current_step;
         if(!dht.getError() && !reset_flag){
             step_get = get_steps(light.get_intensity(), dht.getCelsius());
 
             /* check to see if the reading is valid */
-            if (current_temp != dht.getCelsius()){
-                current_temp = dht.getCelsius();
+            if (dht.isValid()){
                 thread_sleep_for(2500);
                 continue;
             }
