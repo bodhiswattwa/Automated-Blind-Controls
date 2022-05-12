@@ -103,7 +103,7 @@ int main()
             step_get = get_steps(light.get_intensity(), dht.getCelsius());
 
             /* check to see if the reading is valid */
-            if (dht.isValid()){
+            if (!dht.isValid()){
                 thread_sleep_for(2500);
                 continue;
             }
