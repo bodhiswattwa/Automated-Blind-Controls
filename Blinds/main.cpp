@@ -18,7 +18,6 @@
 #include "mbed_thread.h"
 #include "stepper.h"
 #include "photoresistor.h"
-#include <exception>
 
 #define DHT PA_3        // pin for DHT11
 #define LIGHT PA_5      // pin for light sensor
