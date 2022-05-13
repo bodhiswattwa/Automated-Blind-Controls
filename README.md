@@ -4,14 +4,14 @@
 ------------------------------------------------------------------------------
 
 #### Table of Contents  
-[About the Project](#about-the-project)  
-[Key Terminology](#key-terminology)  
-[Design Process](#design-process)   
-[Code and Functionality](#code-and-funcionality)    
-[More on the PID](#more-on-the-pid)     
-[Demo Design](#demo-design)     
-[Schematic](#schematic)     
-[Block Diagram and Preliminary Designs](#block-diagram-and-preliminary-designs)
+* [About the Project](#about-the-project)  
+* [Key Terminology](#key-terminology)  
+* [Design Process](#design-process)   
+* [Code and Functionality](#code-and-funcionality)    
+* [More on the PID](#more-on-the-pid)     
+* [Demo Design](#demo-design)     
+* [Schematic](#schematic)     
+* [Block Diagram and Preliminary Designs](#block-diagram-and-preliminary-designs)
 
 
 ### About the Project
