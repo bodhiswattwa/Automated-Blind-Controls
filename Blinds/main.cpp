@@ -19,19 +19,22 @@
 #include "stepper.h"
 #include "photoresistor.h"
 
-#define DHT PA_3        // pin for DHT11
-#define LIGHT PA_5      // pin for light sensor
+#define DHT PA_3
+#define LIGHT PA_5
+
+/* Left stepper pins */
 #define IN1_LEFT PC_6
 #define IN2_LEFT PB_15
 #define IN3_LEFT PB_13
 #define IN4_LEFT PB_12
 
+/* right stepper pins */
 #define IN1_RIGHT PA_7
 #define IN2_RIGHT PD_14
 #define IN3_RIGHT PD_15
 #define IN4_RIGHT PF_12
 
-#define MODE 0           // TODO: Which mode?
+#define MODE 0
 #define OPEN_LEFT 1
 #define CLOSE_LEFT 0
 #define CLOSE_RIGHT 1
@@ -41,9 +44,9 @@
 #define SLEEP 1000
 
 /* Event Queues */
-EventQueue EQ(32 * EVENTS_EVENT_SIZE);                  // DHT11
-EventQueue STEPPER_LEFT_EQ(1024 * EVENTS_EVENT_SIZE);     // Stepper Left
-EventQueue STEPPER_RIGHT_EQ(1024 * EVENTS_EVENT_SIZE);    // Stepper Right
+EventQueue EQ(32 * EVENTS_EVENT_SIZE);                      // DHT11
+EventQueue STEPPER_LEFT_EQ(1024 * EVENTS_EVENT_SIZE);       // Stepper Left
+EventQueue STEPPER_RIGHT_EQ(1024 * EVENTS_EVENT_SIZE);      // Stepper Right
 
 /* Interrupts */
 InterruptIn button(BUTTON1);
@@ -73,7 +76,7 @@ void reset(void);
 
 int current_step;           // value to iterate steppers back to default state
 bool reset_flag = false;    // flag to wait for another press
-bool re_entry = true;
+bool re_entry = true;       // Debounce
 
 
 int main()
