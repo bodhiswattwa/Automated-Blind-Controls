@@ -76,24 +76,31 @@ By setting the 𝑲_𝒅 as 2.0, we combat the undesirable transient response ti
 ### Demo Design
 ------------------------------------------------------------------------------
 
-TODO: put diagram from lucid chart then images of actual design
+![Diagram](https://user-images.githubusercontent.com/66216074/168320167-4d481ff0-d8f6-4f34-a414-5755b8a2be86.png)
+Figure 1 - Blinds System Design
+
+![IMG_2848](https://user-images.githubusercontent.com/66216074/168320217-b53f305c-96f3-4f08-8ee6-e74d98ec370f.jpg)
+Figure 2 - Physical Implementation 1
+
+![IMG_2849](https://user-images.githubusercontent.com/66216074/168320288-124fa5b8-ed54-40aa-9721-c24970429d2d.jpg)
+Figure 3 - Physical Implementation 2
 
 ### Schematic
 ------------------------------------------------------------------------------
 
-TODO: put lucid chart schematic
-
+![Diagram_-_Schematic](https://user-images.githubusercontent.com/66216074/168319718-198e699e-d20c-4638-85c6-5f9135c523a8.png)
 
 ### Block Diagram and Preliminary Designs
 ------------------------------------------------------------------------------
 
-
 ![Screenshot 2022-05-09 at 1 39 34 PM](https://user-images.githubusercontent.com/66216074/167466983-e798a709-d0f5-4051-b974-57385bf1a0c3.png)
 
-Figure 1 - Control System Diagram
+Figure 4 - Control System Diagram
 
 ![Screenshot 2022-05-09 at 1 39 44 PM](https://user-images.githubusercontent.com/66216074/167466999-70f748e4-e964-4eb9-bc1c-1bf45f589d1a.png)
 
-Figure 2 - Preliminary blind controls. Red line supports turning of blinds using stepper motor. Blue line spaces blinds during opening and closing.
+Figure 5 - Preliminary blind controls. Red line supports turning of blinds using stepper motor. Blue line spaces blinds during opening and closing.
+ 
+
 
 
