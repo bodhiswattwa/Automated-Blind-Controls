@@ -3,11 +3,24 @@
 #### Contributors: Avi Tombak, Bodhiswattwa Basu, Gabriel Yengle & Jesse Both
 ------------------------------------------------------------------------------
 
+#### Table of Contents  
+[About the Project](#about-the-project)  
+[Key Terminology](#key-terminology)  
+[Design Process](#design-process)   
+[Code and Functionality](#code-and-funcionality)    
+[More on the PID](#more-on-the-pid)     
+[Demo Design](#demo-design)     
+[Schematic](#schematic)     
+[Block Diagram and Preliminary Designs](#block-diagram-and-preliminary-designs)
+
+
 ### About the Project
+<a name="About"></a>
 ------------------------------------------------------------------------------
 A typical household loses about 10% of its heat through its windows. In an industrial building, the amount of heat energy loss would be at least thrice the amount. To counteract this loss of heat energy, heater and air ventilation systems produce more heat. This energy inefficiency could be cut down sufficiently with smart blind control. The embedded control system will take into account the amount of transient light available and the external temperature to deduce if the blinds need to be drawn or not. 
 
 ### Key Terminology
+<a name="Terminology"></a>
 ------------------------------------------------------------------------------
 **Embedded Control Systems:** An embedded control system is a microcontroller or microprocessor based system which is designed to perform a specific task or set of tasks. It manages, commands, or regulates the behavior of other devices or peripherals using control loops. 
 
@@ -16,6 +29,7 @@ A typical household loses about 10% of its heat through its windows. In an indus
 **Proportional, Integral and Differential Controller:** PID or a Proportional, Integral and Differential Controller sets to a certain reference as preferred ambient lighting in a room, thereby letting the controller adjust the blinds towards that reference value while conditions outside and inside change during the day. The controller regulates the light that is let through the blind based on a predefined reference value chosen as the amount of indoor lighting.
 
 ### Design Process
+<a name="Design"></a>
 ------------------------------------------------------------------------------
 
 The microcontroller that used for all of the functionalities is the **STM32 L4R5ZI Nucleo-144**.
@@ -43,7 +57,7 @@ By setting the 𝑲_𝒊 as 1.0, again, we reduce the rise time substantially an
 
 By setting the 𝑲_𝒅 as 2.0, we combat the undesirable transient response time and overshooting by making this value higher, which only results in a small change in the rise time.
 
-### Files and Function
+### Code and Functionality
 ------------------------------------------------------------------------------
 
 <ol>
@@ -58,6 +72,17 @@ By setting the 𝑲_𝒅 as 2.0, we combat the undesirable transient response ti
 <li><strong>main.cpp: </strong> The main function is the spine of the program and allows for the synchronization of the other functions. It controls the functionality of the embedded control system and allows for the stepper motor to output according to the other peripherals.
 </li>
 </ol>
+
+### Demo Design
+------------------------------------------------------------------------------
+
+TODO: put diagram from lucid chart then images of actual design
+
+### Schematic
+------------------------------------------------------------------------------
+
+TODO: put lucid chart schematic
+
 
 ### Block Diagram and Preliminary Designs
 ------------------------------------------------------------------------------
